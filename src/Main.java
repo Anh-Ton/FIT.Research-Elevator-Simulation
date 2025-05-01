@@ -1,6 +1,16 @@
 public class Main {
     public static void main(String[] args) {
         Building MenziesBuilding = new Building();
+
+        System.out.println(MenziesBuilding);
+
+        MenziesBuilding.loadElevator(1);
+        System.out.println(MenziesBuilding);
+
+        MenziesBuilding.moveElevator(1, 11);
+        System.out.println(MenziesBuilding);
+
+        MenziesBuilding.unloadElevator(1);
         System.out.println(MenziesBuilding);
 
 

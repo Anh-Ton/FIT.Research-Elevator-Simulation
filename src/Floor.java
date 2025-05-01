@@ -1,21 +1,33 @@
 import java.util.ArrayList;
 
 public class Floor {
-    // Display only
     Elevator[] banks = new Elevator[7];
-
     ArrayList<Person> elevatorQueues = new ArrayList<>();
+    ArrayList<Person> finished = new ArrayList<>();
     int floorLevel;
+    boolean isUpButtonPressed;
+    boolean isDownButtonPressed;
+
 
     public Floor(int floorLevel){
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             elevatorQueues.add(new Person(floorLevel));
         }
         this.floorLevel = floorLevel;
+        this.isUpButtonPressed = false;
+        this.isDownButtonPressed = false;
     }
 
     public void setElevator(int bank, Elevator elevator){
         banks[bank] = elevator;
+    }
+
+    public ArrayList<Person> getFloorElevatorQueue(){
+        return elevatorQueues;
+    }
+
+    public ArrayList<Person> getFinished(){
+        return finished;
     }
 
     @Override
@@ -46,6 +58,13 @@ public class Floor {
         returnString += "Waiting: ";
 
         for (Person person : elevatorQueues){
+            returnString += person.toString() + " ";
+        }
+
+        // Finished
+        returnString += "Finished: ";
+
+        for (Person person : finished){
             returnString += person.toString() + " ";
         }
 
