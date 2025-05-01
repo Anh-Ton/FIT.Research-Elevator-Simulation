@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 
 public class Floor {
-    Elevator[] Banks = new Elevator[7];
+    // Display only
+    Elevator[] banks = new Elevator[7];
+
     ArrayList<Person> elevatorQueues = new ArrayList<>();
     int floorLevel;
 
@@ -10,6 +12,10 @@ public class Floor {
             elevatorQueues.add(new Person(floorLevel));
         }
         this.floorLevel = floorLevel;
+    }
+
+    public void setElevator(int bank, Elevator elevator){
+        banks[bank] = elevator;
     }
 
     @Override
@@ -25,15 +31,15 @@ public class Floor {
         }
 
         // Banks
-        for(int i = 0; i < Banks.length; i++){
-            if (Banks[i] == null){
-                returnString += "| |" + i;
+        for(int i = 0; i < banks.length; i++){
+            if (banks[i] == null){
+                returnString += "|   |" + i;
             }
             else{
-                returnString += "|" + Banks[i].toString() + "|" + i;
+                returnString += "| " + banks[i].toString() + " |" + i;
             }
 
-            returnString += "  ";
+            returnString += "   ";
         }
 
         // Waiting Queue

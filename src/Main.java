@@ -4,6 +4,11 @@ public class Main {
         System.out.println(MenziesBuilding);
 
 
+        // Test Standard Elevator
+//        for (int i = 0; i < 10; i++){
+//            Elevator e1 = new Elevator();
+//            System.out.println(e1.longString());
+//        }
 
         // Test Person
 //        for (int j = 1; j < 13; j++) {
