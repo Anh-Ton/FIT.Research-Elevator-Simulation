@@ -1,10 +1,14 @@
+import java.util.ArrayList;
+
 public class Floor {
     Elevator[] Banks = new Elevator[7];
-    ElevatorQueue elevatorQueues;
+    ArrayList<Person> elevatorQueues = new ArrayList<>();
     int floorLevel;
 
     public Floor(int floorLevel){
-        elevatorQueues = new ElevatorQueue(0);
+        for (int i = 0; i < 4; i++) {
+            elevatorQueues.add(new Person(floorLevel));
+        }
         this.floorLevel = floorLevel;
     }
 
@@ -12,6 +16,7 @@ public class Floor {
     public String toString() {
         String returnString = "";
 
+        // Floor Level
         if (floorLevel == 0){
             returnString += String.format("%3s", "G") + ")  ";
         }
@@ -19,7 +24,7 @@ public class Floor {
             returnString += String.format("%3s", floorLevel) + ")  ";
         }
 
-
+        // Banks
         for(int i = 0; i < Banks.length; i++){
             if (Banks[i] == null){
                 returnString += "| |" + i;
@@ -30,7 +35,14 @@ public class Floor {
 
             returnString += "  ";
         }
-        returnString += "Waiting: " + elevatorQueues.toString();
+
+        // Waiting Queue
+        returnString += "Waiting: ";
+
+        for (Person person : elevatorQueues){
+            returnString += person.toString() + " ";
+        }
+
         return returnString;
     }
 }
