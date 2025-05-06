@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Building {
@@ -9,10 +8,14 @@ public class Building {
     public Elevator[] elevators = new Elevator[7];
 
     public Building(){
+        // Initialise all floors
         for (int i = 0; i < floors.length; i++){
             floors[i] = new Floor(i);
+            // Update up down buttons
+            floors[i].updateUpDownButtons();
         }
 
+        // Set and create all elevators to random level in each bank
         for (int i = 0; i < elevators.length; i++){
             elevators[i] = new Elevator(this, i);
 

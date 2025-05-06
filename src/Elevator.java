@@ -33,9 +33,144 @@ public class Elevator {
         this.bank = bank;
     }
 
+    public void getNextFloor(){
+        currentTick = 0;
+
+        // Loop at most twice
+        for (int j = 0; j < 2; j++) {
+            // Going UP logic
+            if (isGoingUp){
+                int min = Building.NUMBER_OF_FLOORS;
+                boolean foundMin = false;
+
+                // Linear scan everyone on elevator for: min that is >currentFloor
+                for (Person person : peopleOnElevator){
+                    if (person.desiredFloor > currentFloor && person.desiredFloor < min){
+                        min = person.desiredFloor;
+
+                        if (!foundMin){
+                            foundMin = true;
+                        }
+                    }
+                }
+
+                // Linear scan floors above for UP button pressed
+                for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
+                    if (building.floors[i].isUpPressed){
+                        if (building.floors[i].floorLevel < min){
+                            min = building.floors[i].floorLevel;
+
+                            if (!foundMin){
+                                foundMin = true;
+                            }
+                        }
+                    }
+                }
+
+                // If found, set target
+                if (foundMin){
+                    nextFloorTarget = min;
+                    break;
+                }
+                else {
+                    System.out.println(bank + " search above for DOWN button pressed");
+                    // Else, search above for DOWN button pressed
+                    for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
+                        if (building.floors[i].isDownPressed){
+                            if (building.floors[i].floorLevel < min){
+                                min = building.floors[i].floorLevel;
+
+                                if (!foundMin){
+                                    foundMin = true;
+                                }
+                            }
+                        }
+                    }
+
+                    // Flip direction
+                    isGoingUp = false;
+                }
+
+                if (foundMin){
+                    nextFloorTarget = min;
+                    break;
+                }
+                // Else loop once more if first loop
+            }
+
+            // Going DOWN logic
+            else {
+                int max = 0;
+                boolean foundMax = false;
+
+                // Linear scan everyone on elevator for: max that is <currentFloor
+                for (Person person : peopleOnElevator){
+                    if (person.desiredFloor < currentFloor && person.desiredFloor > max){
+                        max = person.desiredFloor;
+
+                        if (!foundMax){
+                            foundMax = true;
+                        }
+                    }
+                }
+
+                // Linear scan floors below for DOWN button pressed
+                for (int i = currentFloor - 1; i >= 0; i--){
+                    if (building.floors[i].isDownPressed){
+                        if (building.floors[i].floorLevel > max){
+                            max = building.floors[i].floorLevel;
+
+                            if (!foundMax){
+                                foundMax = true;
+                            }
+                        }
+                    }
+                }
+
+                // If found, set target
+                if (foundMax){
+                    nextFloorTarget = max;
+                    break;
+                }
+                else {
+                    System.out.println(bank + " search below for UP button pressed");
+                    // Else, search below for UP button pressed
+                    for (int i = currentFloor - 1; i >= 0; i--){
+                        if (building.floors[i].isUpPressed){
+                            if (building.floors[i].floorLevel > max){
+                                max = building.floors[i].floorLevel;
+
+                                if (!foundMax){
+                                    foundMax = true;
+                                }
+                            }
+                        }
+                    }
+                    // Flip direction
+                    isGoingUp = true;
+                }
+
+                if (foundMax){
+                    nextFloorTarget = max;
+                    break;
+                }
+                // Else loop once more if first loop
+            }
+        }
+
+        // Update finishedNextFloorTick
+        finishedNextFloorTick = Building.LEVELS_TRAVELLED_TO_TIME[Math.abs(currentFloor - nextFloorTarget)];
+        System.out.println(bank + " " + finishedNextFloorTick);
+    }
+
     public void moveElevator(int newFloor){
+        // Make current null (as null represents no elevator)
         building.floors[currentFloor].setElevator(bank, null);
+
+        // Set elevator object at new floor
         building.floors[newFloor].setElevator(bank, this);
+
+        // Update attribute
         this.currentFloor = newFloor;
     }
 
@@ -66,6 +201,8 @@ public class Elevator {
                 }
             }
         }
+
+        building.floors[currentFloor].updateUpDownButtons();
     }
 
     public void updateMaxElevatorCapacity(Random random){
@@ -79,18 +216,6 @@ public class Elevator {
     public boolean isEmpty(){
         return this.peopleOnElevator.isEmpty();
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Override

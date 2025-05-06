@@ -8,9 +8,10 @@ public class Main {
             elevator.loadElevator();
         }
 
-        System.out.println(menziesBuilding);
 
-        menziesBuilding.elevators[0].moveElevator(11);
+        for (Elevator elevator: menziesBuilding.elevators){
+            elevator.getNextFloor();
+        }
 
         System.out.println(menziesBuilding);
     }

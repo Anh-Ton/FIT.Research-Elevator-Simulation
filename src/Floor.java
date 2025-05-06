@@ -23,6 +23,9 @@ public class Floor {
     }
 
     public void updateUpDownButtons(){
+        this.isUpPressed = false;
+        this.isDownPressed = false;
+
         for (Person person : peopleWaiting){
             if (isDownPressed && isUpPressed){
                 return;
