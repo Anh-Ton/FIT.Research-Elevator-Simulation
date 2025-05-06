@@ -10,12 +10,20 @@ public class Floor {
 
 
     public Floor(int floorLevel){
-        for (int i = 0; i < 6; i++) {
-            peopleWaiting.add(new Person(floorLevel));
-        }
         this.floorLevel = floorLevel;
         this.isUpPressed = false;
         this.isDownPressed = false;
+
+        if (floorLevel == 0){
+            for (int i = 0; i < 7; i++) {
+                peopleWaiting.add(new Person(floorLevel));
+            }
+        }
+        else{
+            for (int i = 0; i < 3; i++) {
+                peopleWaiting.add(new Person(floorLevel));
+            }
+        }
     }
 
     public void setElevator(int bank, Elevator elevator){

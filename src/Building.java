@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Scanner;
 
 public class Building {
     public final static int NUMBER_OF_FLOORS = 12;
@@ -25,6 +26,38 @@ public class Building {
             floors[randomInt].setElevator(i, elevators[i]);
             elevators[i].currentFloor = randomInt;
         }
+    }
+
+    public void run(){
+        Scanner scanner = new Scanner(System.in);
+
+        while (!isComplete()){
+            for (Elevator elevator: elevators){
+                elevator.getToNextFloorStart();
+            }
+
+            for (Elevator elevator: elevators){
+                elevator.getToNextFloorEnd();
+            }
+
+            System.out.println(this);
+//            scanner.nextLine();
+        }
+    }
+
+    public boolean isComplete(){
+        for (Floor floor : floors){
+            if (!floor.isFloorFinished()){
+                return false;
+            }
+        }
+
+        for (Elevator elevator : elevators){
+            if(!elevator.isEmpty()){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
