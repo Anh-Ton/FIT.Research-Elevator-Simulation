@@ -3,8 +3,10 @@ import java.util.Random;
 
 public class Building {
     public final static int NUMBER_OF_FLOORS = 12;
-    Floor[] floors = new Floor[NUMBER_OF_FLOORS];
-    Elevator[] elevators = new Elevator[7];
+    // DATA: 0, 17.78, 19.12, 20.23, 21.53, 23.21, 25.12, 26.43, 27.98, 30.52, 32.33, 33.78
+    public final static int[] LEVELS_TRAVELLED_TO_TIME= {0, 18, 19, 20, 22, 23, 25, 26, 28, 31, 32, 34};
+    public Floor[] floors = new Floor[NUMBER_OF_FLOORS];
+    public Elevator[] elevators = new Elevator[7];
 
     public Building(){
         for (int i = 0; i < floors.length; i++){
@@ -12,41 +14,13 @@ public class Building {
         }
 
         for (int i = 0; i < elevators.length; i++){
-            elevators[i] = new Elevator();
+            elevators[i] = new Elevator(this, i);
 
             Random random = new Random();
             int randomInt = random.nextInt(NUMBER_OF_FLOORS);
 
             floors[randomInt].setElevator(i, elevators[i]);
-            elevators[i].setCurrentFloor(randomInt);
-        }
-    }
-
-    public void moveElevator(int bank, int newFloor){
-        int currentFloor = elevators[bank].getCurrentFloor();
-        floors[currentFloor].setElevator(bank,null);
-        floors[newFloor].setElevator(bank, elevators[bank]);
-
-        elevators[bank].setCurrentFloor(newFloor);
-    }
-
-    public void loadElevator(int bank){
-        Elevator currentElevator = elevators[bank];
-        int currentFloor = currentElevator.getCurrentFloor();
-        ArrayList<Person> floorElevatorQueue = floors[currentFloor].getFloorElevatorQueue();
-
-        while (!floorElevatorQueue.isEmpty() && !currentElevator.isAtMaxCapacity()){
-            currentElevator.addPerson(floorElevatorQueue.removeFirst());
-        }
-    }
-
-    public void unloadElevator(int bank){
-        Elevator currentElevator = elevators[bank];
-        int currentFloor = currentElevator.getCurrentFloor();
-        ArrayList<Person> finished = floors[currentFloor].getFinished();
-
-        while (!currentElevator.isEmpty()){
-            finished.add(currentElevator.removePerson());
+            elevators[i].currentFloor = randomInt;
         }
     }
 
@@ -56,6 +30,11 @@ public class Building {
         for (int i = floors.length - 1; i >= 0; i--){
             returnString += floors[i].toString() + "\n\n";
         }
+
+        for (Elevator elevator: elevators){
+            returnString += elevator.longString() + '\n';
+        }
+
         return returnString;
     }
 }

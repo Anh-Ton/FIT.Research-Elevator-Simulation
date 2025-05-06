@@ -1,33 +1,44 @@
 import java.util.ArrayList;
 
 public class Floor {
-    Elevator[] banks = new Elevator[7];
-    ArrayList<Person> elevatorQueues = new ArrayList<>();
-    ArrayList<Person> finished = new ArrayList<>();
-    int floorLevel;
-    boolean isUpButtonPressed;
-    boolean isDownButtonPressed;
+    public Elevator[] banks = new Elevator[7];
+    public ArrayList<Person> peopleWaiting = new ArrayList<>();
+    public ArrayList<Person> peopleAtDestination = new ArrayList<>();
+    public int floorLevel;
+    public boolean isUpPressed;
+    public boolean isDownPressed;
 
 
     public Floor(int floorLevel){
         for (int i = 0; i < 6; i++) {
-            elevatorQueues.add(new Person(floorLevel));
+            peopleWaiting.add(new Person(floorLevel));
         }
         this.floorLevel = floorLevel;
-        this.isUpButtonPressed = false;
-        this.isDownButtonPressed = false;
+        this.isUpPressed = false;
+        this.isDownPressed = false;
     }
 
     public void setElevator(int bank, Elevator elevator){
         banks[bank] = elevator;
     }
 
-    public ArrayList<Person> getFloorElevatorQueue(){
-        return elevatorQueues;
+    public void updateUpDownButtons(){
+        for (Person person : peopleWaiting){
+            if (isDownPressed && isUpPressed){
+                return;
+            }
+
+            if (person.desiredFloor < floorLevel){
+                isDownPressed = true;
+            }
+            else if (person.desiredFloor > floorLevel){
+                isUpPressed = true;
+            }
+        }
     }
 
-    public ArrayList<Person> getFinished(){
-        return finished;
+    public boolean isFloorFinished(){
+        return peopleWaiting.isEmpty();
     }
 
     @Override
@@ -54,17 +65,34 @@ public class Floor {
             returnString += "   ";
         }
 
+        // UP and DOWN buttons
+        returnString += "(";
+        if (isUpPressed){
+            returnString += "UP";
+        }
+        else {
+            returnString += "-";
+        }
+        returnString += "|";
+        if (isDownPressed){
+            returnString += "DOWN";
+        }
+        else {
+            returnString += "-";
+        }
+        returnString += ") ";
+
         // Waiting Queue
         returnString += "Waiting: ";
 
-        for (Person person : elevatorQueues){
+        for (Person person : peopleWaiting){
             returnString += person.toString() + " ";
         }
 
         // Finished
         returnString += "Finished: ";
 
-        for (Person person : finished){
+        for (Person person : peopleAtDestination){
             returnString += person.toString() + " ";
         }
 

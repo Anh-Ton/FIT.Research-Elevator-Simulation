@@ -1,31 +1,17 @@
 public class Main {
     public static void main(String[] args) {
-        Building MenziesBuilding = new Building();
+        Building menziesBuilding = new Building();
 
-        System.out.println(MenziesBuilding);
+        System.out.println(menziesBuilding);
 
-        MenziesBuilding.loadElevator(1);
-        System.out.println(MenziesBuilding);
+        for (Elevator elevator: menziesBuilding.elevators){
+            elevator.loadElevator();
+        }
 
-        MenziesBuilding.moveElevator(1, 11);
-        System.out.println(MenziesBuilding);
+        System.out.println(menziesBuilding);
 
-        MenziesBuilding.unloadElevator(1);
-        System.out.println(MenziesBuilding);
+        menziesBuilding.elevators[0].moveElevator(11);
 
-
-        // Test Standard Elevator
-//        for (int i = 0; i < 10; i++){
-//            Elevator e1 = new Elevator();
-//            System.out.println(e1.longString());
-//        }
-
-        // Test Person
-//        for (int j = 1; j < 13; j++) {
-//            System.out.println();
-//            for (int i = 0; i < 100; i++) {
-//                System.out.println(new Person(j));
-//            }
-//        }
+        System.out.println(menziesBuilding);
     }
 }

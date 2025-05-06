@@ -1,7 +1,7 @@
 import java.util.Random;
 
 public class Person {
-    int desiredFloor;
+    public int desiredFloor;
 
     public Person(int startingFloor) {
         Random random = new Random();
@@ -24,10 +24,6 @@ public class Person {
                     desiredFloor = randomFloor;
                 }
             }
-        }
-
-        if (startingFloor == desiredFloor){
-            throw new java.lang.Error("this is very bad: " + desiredFloor + " when sf is " + startingFloor);
         }
     }
 
