@@ -11,8 +11,8 @@ public class Person {
             desiredFloor = randomFloor;
         }
         else {
-            Double randomDouble = random.nextDouble();
-            if (randomDouble < 0.7) {
+            double randomDouble = random.nextDouble();
+            if (randomDouble < 0.4) {
                 desiredFloor = 0;
             }
             else{

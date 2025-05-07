@@ -7,6 +7,7 @@ public class Building {
     public final static int[] LEVELS_TRAVELLED_TO_TIME= {0, 18, 19, 20, 22, 23, 25, 26, 28, 31, 32, 34};
     public Floor[] floors = new Floor[NUMBER_OF_FLOORS];
     public Elevator[] elevators = new Elevator[7];
+    public int secondElapsed;
 
     public Building(){
         // Initialise all floors
@@ -26,23 +27,27 @@ public class Building {
             floors[randomInt].setElevator(i, elevators[i]);
             elevators[i].currentFloor = randomInt;
         }
+
+        secondElapsed = 0;
     }
 
     public void run(){
         Scanner scanner = new Scanner(System.in);
 
         while (!isComplete()){
-            for (Elevator elevator: elevators){
-                elevator.getToNextFloorStart();
-            }
+            secondElapsed++;
+
+            System.out.println("            ~ " + secondElapsed + " seconds have passed ~\n");
 
             for (Elevator elevator: elevators){
-                elevator.getToNextFloorEnd();
+                elevator.tick();
             }
 
             System.out.println(this);
 //            scanner.nextLine();
         }
+
+        System.out.println("\n\nIt took a total of " + secondElapsed + " seconds to move everyone");
     }
 
     public boolean isComplete(){

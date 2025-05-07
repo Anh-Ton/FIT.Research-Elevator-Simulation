@@ -12,6 +12,7 @@ public class Elevator {
     public boolean isGoingUp;
     public int currentTick;
     public int finishedNextFloorTick;
+    public boolean noMoreTargets;
 
     // Location
     public int currentFloor;
@@ -31,12 +32,46 @@ public class Elevator {
         this.currentFloor = 0;
         this.building = building;
         this.bank = bank;
+        this.currentTick = -1;
+        this.noMoreTargets = false;
+    }
+
+    public void tick(){
+        if (noMoreTargets){
+            return;
+        }
+
+        if (currentTick == -1){
+            currentTick++;
+            getToNextFloorStart();
+            return;
+        }
+
+        if (currentTick < finishedNextFloorTick){
+            currentTick++;
+        }
+        else {
+            getToNextFloorEnd();
+        }
+    }
+
+    public boolean checkTargetAlreadyTaken(int targetFloorToCheck){
+        for (Elevator elevator: building.elevators){
+            if (elevator.nextFloorTarget == targetFloorToCheck){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void getToNextFloorEnd(){
+        if (nextFloorTarget == -1){
+            return;
+        }
         moveElevator(nextFloorTarget);
         unloadElevator();
         currentTick = -1;
+        nextFloorTarget = -1;
     }
 
     public void moveElevator(int newFloor){
@@ -122,6 +157,10 @@ public class Elevator {
 
                 // Linear scan floors above for UP button pressed
                 for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
+                    if (checkTargetAlreadyTaken(i)){
+                        continue;
+                    }
+
                     if (building.floors[i].isUpPressed){
                         if (building.floors[i].floorLevel < min){
                             min = building.floors[i].floorLevel;
@@ -181,6 +220,10 @@ public class Elevator {
 
                 // Linear scan floors below for DOWN button pressed
                 for (int i = currentFloor - 1; i >= 0; i--){
+                    if (checkTargetAlreadyTaken(i)){
+                        continue;
+                    }
+
                     if (building.floors[i].isDownPressed){
                         if (building.floors[i].floorLevel > max){
                             max = building.floors[i].floorLevel;
@@ -223,15 +266,16 @@ public class Elevator {
         }
 
         // Update finishedNextFloorTick
-        finishedNextFloorTick = Building.LEVELS_TRAVELLED_TO_TIME[Math.abs(currentFloor - nextFloorTarget)];
+        if (nextFloorTarget != -1){
+            finishedNextFloorTick = Building.LEVELS_TRAVELLED_TO_TIME[Math.abs(currentFloor - nextFloorTarget)];
+        }
+        else {
+            noMoreTargets = true;
+        }
     }
 
     public void updateMaxElevatorCapacity(Random random){
         maxElevatorCapacity = random.nextInt(8 - 5) + 5;
-    }
-
-    public boolean isAtMaxCapacity(){
-        return this.peopleOnElevator.size() >= this.maxElevatorCapacity;
     }
 
     public boolean isEmpty(){
@@ -248,8 +292,13 @@ public class Elevator {
         String returnString = "";
 
         returnString += "Bank " + bank +
-                        " | Current floor: " + currentFloor +
-                        " --> " + nextFloorTarget;
+                        " | Current floor: " + currentFloor;
+        if(nextFloorTarget == -1){
+            returnString += " --> No Target";
+        }
+        else{
+            returnString += " --> " + nextFloorTarget;
+        }
 
         if (isGoingUp){
             returnString += " | " + "UP";
@@ -261,8 +310,16 @@ public class Elevator {
         returnString += " | Capacity (" + peopleOnElevator.size() +
                         "/" + maxElevatorCapacity + ")";
 
-        returnString += " | Tick (" + currentTick +
-                "/" + finishedNextFloorTick + ")";
+        if(noMoreTargets){
+            returnString += " | STATIONARY";
+        }
+        else if(currentTick == -1){
+            returnString += " | Docked";
+        }
+        else{
+            returnString += " | Tick (" + currentTick +
+                    "/" + finishedNextFloorTick + ")";
+        }
 
         returnString += " | People: ";
 
