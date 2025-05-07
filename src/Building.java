@@ -31,7 +31,7 @@ public class Building {
         secondElapsed = 0;
     }
 
-    public void run(){
+    public void runWithVisuals(){
         Scanner scanner = new Scanner(System.in);
 
         while (!isComplete()){
@@ -48,6 +48,16 @@ public class Building {
         }
 
         System.out.println("\n\nIt took a total of " + secondElapsed + " seconds to move everyone");
+    }
+
+    public void run(){
+        while (!isComplete()){
+            secondElapsed++;
+
+            for (Elevator elevator: elevators){
+                elevator.tick();
+            }
+        }
     }
 
     public boolean isComplete(){
