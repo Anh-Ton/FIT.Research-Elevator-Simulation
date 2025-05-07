@@ -1,5 +1,4 @@
 import java.util.Random;
-import java.util.Scanner;
 
 public class Building {
     public final static int NUMBER_OF_FLOORS = 12;
@@ -19,7 +18,8 @@ public class Building {
 
         // Set and create all elevators to random level in each bank
         for (int i = 0; i < elevators.length; i++){
-            elevators[i] = new Elevator(this, i);
+            int[] floorsToSkip = {};
+            elevators[i] = new ExpressElevator(this, i, floorsToSkip);
 
             Random random = new Random();
             int randomInt = random.nextInt(NUMBER_OF_FLOORS);
@@ -32,8 +32,6 @@ public class Building {
     }
 
     public void runWithVisuals(){
-        Scanner scanner = new Scanner(System.in);
-
         while (!isComplete()){
             secondElapsed++;
 
@@ -44,9 +42,9 @@ public class Building {
             }
 
             System.out.println(this);
-//            scanner.nextLine();
+
             try {
-                Thread.sleep(100);
+                Thread.sleep(0);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
