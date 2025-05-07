@@ -45,6 +45,11 @@ public class Building {
 
             System.out.println(this);
 //            scanner.nextLine();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
 
         System.out.println("\n\nIt took a total of " + secondElapsed + " seconds to move everyone");

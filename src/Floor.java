@@ -70,7 +70,7 @@ public class Floor {
                 returnString += "|   |" + i;
             }
             else{
-                returnString += "| " + banks[i].toString() + " |" + i;
+                returnString += "|(" + banks[i].toString() + ")|" + i;
             }
 
             returnString += "   ";

@@ -270,7 +270,15 @@ public class Elevator {
             finishedNextFloorTick = Building.LEVELS_TRAVELLED_TO_TIME[Math.abs(currentFloor - nextFloorTarget)];
         }
         else {
-            noMoreTargets = true;
+            // Handle G and Top floor
+            isGoingUp = !isGoingUp;
+            loadElevator();
+            if (peopleOnElevator.isEmpty()){
+                noMoreTargets = true;
+            }
+            else{
+                getToNextFloorStart();
+            }
         }
     }
 
