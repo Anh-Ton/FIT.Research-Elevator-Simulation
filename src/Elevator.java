@@ -37,10 +37,6 @@ public class Elevator {
     }
 
     public void tick(){
-        if (noMoreTargets){
-            return;
-        }
-
         if (currentTick == -1){
             currentTick++;
             getToNextFloorStart();
@@ -53,15 +49,6 @@ public class Elevator {
         else {
             getToNextFloorEnd();
         }
-    }
-
-    public boolean checkTargetAlreadyTaken(int targetFloorToCheck){
-        for (Elevator elevator: building.elevators){
-            if (elevator.nextFloorTarget == targetFloorToCheck){
-                return true;
-            }
-        }
-        return false;
     }
 
     public void getToNextFloorEnd(){
@@ -157,9 +144,6 @@ public class Elevator {
 
                 // Linear scan floors above for UP button pressed
                 for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
-                    if (checkTargetAlreadyTaken(i)){
-                        continue;
-                    }
 
                     if (building.floors[i].isUpPressed){
                         if (building.floors[i].floorLevel < min){
@@ -220,9 +204,6 @@ public class Elevator {
 
                 // Linear scan floors below for DOWN button pressed
                 for (int i = currentFloor - 1; i >= 0; i--){
-                    if (checkTargetAlreadyTaken(i)){
-                        continue;
-                    }
 
                     if (building.floors[i].isDownPressed){
                         if (building.floors[i].floorLevel > max){

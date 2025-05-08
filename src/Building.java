@@ -1,5 +1,5 @@
-import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Building {
     public final static int NUMBER_OF_FLOORS = 12;
@@ -21,9 +21,7 @@ public class Building {
         // Set and create all elevators to random level in each bank
         for (int i = 0; i < elevators.length; i++){
             int[] floorsToSkip = {};
-            System.out.println(Arrays.toString(elevatorSetup[i]));
             elevators[i] = new ExpressElevator(this, i, elevatorSetup[i]);
-            System.out.println(Arrays.toString(elevators[i].skippedFloors));
             Random random = new Random();
             int randomInt = random.nextInt(NUMBER_OF_FLOORS);
 
@@ -50,6 +48,11 @@ public class Building {
                 Thread.sleep(0);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+            }
+
+            if(secondElapsed > 400){
+                Scanner scanner = new Scanner(System.in);
+                scanner.nextLine();
             }
         }
 

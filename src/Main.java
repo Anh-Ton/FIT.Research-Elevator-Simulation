@@ -11,13 +11,13 @@ public class Main {
         boolean runWithVisals = true;
 
         int[][] noExpress = {
-                {1},
-                {1},
-                {1},
-                {1},
-                {1},
-                {1},
-                {}
+                {0},
+                {0},
+                {0},
+                {0},
+                {0},
+                {0},
+                {3}
         };
 
         if (runWithVisals) {

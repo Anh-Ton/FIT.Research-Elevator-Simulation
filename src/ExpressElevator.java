@@ -22,6 +22,7 @@ public class ExpressElevator extends Elevator{
 
     @Override
     public void loadElevator(){
+        System.out.println(bank + "loading elevator");
         ArrayList<Person> peopleWaiting = building.floors[currentFloor].peopleWaiting;
 
         int originalSize = peopleWaiting.size();
@@ -33,7 +34,6 @@ public class ExpressElevator extends Elevator{
             Person person = peopleWaiting.removeFirst();
             if (skippedFloors[person.desiredFloor]){
                 peopleWaiting.add(person);
-                System.out.println(bank + " Can't take destination: " + person.desiredFloor);
                 continue;
             }
 
@@ -60,16 +60,18 @@ public class ExpressElevator extends Elevator{
 
     @Override
     public void getToNextFloorStart(){
-        loadElevator();
-
         currentTick = 0;
 
         // Loop at most twice
         for (int j = 0; j < 2; j++) {
+            loadElevator();
+
             // Going UP logic
             if (isGoingUp){
                 int min = Building.NUMBER_OF_FLOORS + 1;
                 boolean foundMin = false;
+
+                System.out.println(bank + " check people for min");
 
                 // Linear scan everyone on elevator for: min that is >currentFloor
                 for (Person person : peopleOnElevator){
@@ -82,14 +84,15 @@ public class ExpressElevator extends Elevator{
                     }
                 }
 
+                System.out.println(bank + " check people UP press");
+
                 // Linear scan floors above for UP button pressed
                 for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
-                    if (checkTargetAlreadyTaken(i)){
-                        continue;
-                    }
-
+                    System.out.println(i + " 1");
                     if (building.floors[i].isUpPressed && !skippedFloors[i]){
+                        System.out.println("2");
                         if (building.floors[i].floorLevel < min){
+                            System.out.println("3");
                             min = building.floors[i].floorLevel;
 
                             if (!foundMin){
@@ -105,10 +108,14 @@ public class ExpressElevator extends Elevator{
                     break;
                 }
                 else {
+                    System.out.println(bank + " SADLY check people DOWN press");
                     // Else, search above for DOWN button pressed
                     for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
+                        System.out.println("floor " + i);
                         if (building.floors[i].isDownPressed && !skippedFloors[i]){
+                            System.out.println("1");
                             if (building.floors[i].floorLevel < min){
+                                System.out.println("2");
                                 min = building.floors[i].floorLevel;
 
                                 if (!foundMin){
@@ -126,6 +133,7 @@ public class ExpressElevator extends Elevator{
                     nextFloorTarget = min;
                     break;
                 }
+                System.out.println(bank + " NO MIN");
                 // Else loop once more if first loop
             }
 
@@ -133,6 +141,8 @@ public class ExpressElevator extends Elevator{
             else {
                 int max = -1;
                 boolean foundMax = false;
+
+                System.out.println(bank + " check people for max");
 
                 // Linear scan everyone on elevator for: max that is <currentFloor
                 for (Person person : peopleOnElevator){
@@ -145,14 +155,15 @@ public class ExpressElevator extends Elevator{
                     }
                 }
 
+                System.out.println(bank + " check people DOWN press");
+
                 // Linear scan floors below for DOWN button pressed
                 for (int i = currentFloor - 1; i >= 0; i--){
-                    if (checkTargetAlreadyTaken(i)){
-                        continue;
-                    }
-
+                    System.out.println(i + " 1");
                     if (building.floors[i].isDownPressed && !skippedFloors[i]){
+                        System.out.println("2");
                         if (building.floors[i].floorLevel > max){
+                            System.out.println("3");
                             max = building.floors[i].floorLevel;
 
                             if (!foundMax){
@@ -168,10 +179,14 @@ public class ExpressElevator extends Elevator{
                     break;
                 }
                 else {
+                    System.out.println(bank + " SADLY check people UP press");
                     // Else, search below for UP button pressed
                     for (int i = currentFloor - 1; i >= 0; i--){
+                        System.out.println("floor " + i);
                         if (building.floors[i].isUpPressed && !skippedFloors[i]){
+                            System.out.println("1");
                             if (building.floors[i].floorLevel > max){
+                                System.out.println("2");
                                 max = building.floors[i].floorLevel;
 
                                 if (!foundMax){
@@ -188,24 +203,24 @@ public class ExpressElevator extends Elevator{
                     nextFloorTarget = max;
                     break;
                 }
+                System.out.println(bank + " NO MAX");
                 // Else loop once more if first loop
             }
         }
-
         // Update finishedNextFloorTick
         if (nextFloorTarget != -1){
             finishedNextFloorTick = Building.LEVELS_TRAVELLED_TO_TIME[Math.abs(currentFloor - nextFloorTarget)];
         }
         else {
-            // Handle G and Top floor
+//            System.out.println(bank + " " + Boolean.toString(isGoingUp) + " -> " + Boolean.toString(!isGoingUp));
+//            // Handle G and Top floor
             isGoingUp = !isGoingUp;
-            loadElevator();
-            if (peopleOnElevator.isEmpty()){
-                noMoreTargets = true;
-            }
-            else{
-                getToNextFloorStart();
-            }
+//            if (peopleOnElevator.isEmpty()){
+//                noMoreTargets = true;
+//            }
+//            else{
+//                getToNextFloorStart();
+//            }
         }
     }
 
