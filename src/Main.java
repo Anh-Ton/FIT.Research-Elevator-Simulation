@@ -8,24 +8,42 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Building menziesBuilding = new Building();
-        menziesBuilding.runWithVisuals();
+        boolean runWithVisals = true;
 
-//        try {
-//            BufferedWriter writer = new BufferedWriter(new FileWriter("simulation_results.csv"));
-//            for (int i = 0; i < SIMULATION_ITERATIONS_PER_RATIO; i++) {
-//                if (i % MAX_CELL_ROW_LENGTH == 0) {
-//                    writer.write("\n");
-//                }
-//
-//                Building menziesBuilding = new Building();
-//                menziesBuilding.run();
-//                writer.write(menziesBuilding.secondElapsed + ",");
-//            }
-//            writer.close();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        int[][] noExpress = {
+                {1},
+                {1},
+                {1},
+                {1},
+                {1},
+                {1},
+                {}
+        };
+
+        if (runWithVisals) {
+            for (int i = 0; i < 500; i++) {
+                Building menziesBuilding = new Building(noExpress);
+                menziesBuilding.runWithVisuals();
+            }
+        }
+
+        else{
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter("simulation_results.csv"));
+                for (int i = 0; i < SIMULATION_ITERATIONS_PER_RATIO; i++) {
+                    if (i % MAX_CELL_ROW_LENGTH == 0) {
+                        writer.write("\n");
+                    }
+
+                    Building menziesBuilding = new Building(noExpress);
+                    menziesBuilding.run();
+                    writer.write(menziesBuilding.secondElapsed + ",");
+                }
+                writer.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

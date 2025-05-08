@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Floor {
-    public Elevator[] banks = new Elevator[7];
+    public Elevator[] banks = new Elevator[Building.NUMBER_OF_ELEVATORS];
     public ArrayList<Person> peopleWaiting = new ArrayList<>();
     public ArrayList<Person> peopleAtDestination = new ArrayList<>();
     public int floorLevel;

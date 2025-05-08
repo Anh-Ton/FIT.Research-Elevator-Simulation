@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -206,5 +207,10 @@ public class ExpressElevator extends Elevator{
                 getToNextFloorStart();
             }
         }
+    }
+
+    @Override
+    public String longString(){
+        return super.longString() + " " + Arrays.toString(skippedFloors);
     }
 }

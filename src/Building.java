@@ -1,14 +1,16 @@
+import java.util.Arrays;
 import java.util.Random;
 
 public class Building {
     public final static int NUMBER_OF_FLOORS = 12;
+    public final static int NUMBER_OF_ELEVATORS = 7;
     // DATA: 0, 17.78, 19.12, 20.23, 21.53, 23.21, 25.12, 26.43, 27.98, 30.52, 32.33, 33.78
     public final static int[] LEVELS_TRAVELLED_TO_TIME= {0, 18, 19, 20, 22, 23, 25, 26, 28, 31, 32, 34};
     public Floor[] floors = new Floor[NUMBER_OF_FLOORS];
-    public Elevator[] elevators = new Elevator[7];
+    public ExpressElevator[] elevators = new ExpressElevator[NUMBER_OF_ELEVATORS];
     public int secondElapsed;
 
-    public Building(){
+    public Building(int[][] elevatorSetup){
         // Initialise all floors
         for (int i = 0; i < floors.length; i++){
             floors[i] = new Floor(i);
@@ -19,8 +21,9 @@ public class Building {
         // Set and create all elevators to random level in each bank
         for (int i = 0; i < elevators.length; i++){
             int[] floorsToSkip = {};
-            elevators[i] = new ExpressElevator(this, i, floorsToSkip);
-
+            System.out.println(Arrays.toString(elevatorSetup[i]));
+            elevators[i] = new ExpressElevator(this, i, elevatorSetup[i]);
+            System.out.println(Arrays.toString(elevators[i].skippedFloors));
             Random random = new Random();
             int randomInt = random.nextInt(NUMBER_OF_FLOORS);
 
