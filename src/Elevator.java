@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class Elevator {
@@ -13,6 +14,7 @@ public class Elevator {
     public int currentTick;
     public int finishedNextFloorTick;
     public boolean noMoreTargets;
+    boolean[] skippedFloors = new boolean[Building.NUMBER_OF_FLOORS];
 
     // Location
     public int currentFloor;
@@ -21,7 +23,7 @@ public class Elevator {
     // Target
     public int nextFloorTarget;
 
-    public Elevator(Building building, int bank){
+    public Elevator(Building building, int bank, int[] choseFloorsToSkip){
         // Randomise SCAN direction
         Random random = new Random();
         isGoingUp = random.nextBoolean();
@@ -34,6 +36,18 @@ public class Elevator {
         this.bank = bank;
         this.currentTick = -1;
         this.noMoreTargets = false;
+
+        setSkippedFloors(choseFloorsToSkip);
+    }
+
+    public void setSkippedFloors(int[] choseFloorsToSkip) {
+        Arrays.fill(skippedFloors, false);
+
+        for (int floorLevel : choseFloorsToSkip) {
+            if (floorLevel >= 0 && floorLevel < Building.NUMBER_OF_FLOORS) {
+                skippedFloors[floorLevel] = true;
+            }
+        }
     }
 
     public void tick(){
@@ -73,6 +87,7 @@ public class Elevator {
     }
 
     public void loadElevator(){
+        System.out.println(bank + "loading elevator");
         ArrayList<Person> peopleWaiting = building.floors[currentFloor].peopleWaiting;
 
         int originalSize = peopleWaiting.size();
@@ -82,6 +97,11 @@ public class Elevator {
             }
 
             Person person = peopleWaiting.removeFirst();
+            if (skippedFloors[person.desiredFloor]){
+                peopleWaiting.add(person);
+                continue;
+            }
+
             if (isGoingUp){
                 if (person.desiredFloor > currentFloor){
                     peopleOnElevator.add(person);
@@ -120,20 +140,22 @@ public class Elevator {
     }
 
     public void getToNextFloorStart(){
-        loadElevator();
-
         currentTick = 0;
 
         // Loop at most twice
         for (int j = 0; j < 2; j++) {
+            loadElevator();
+
             // Going UP logic
             if (isGoingUp){
                 int min = Building.NUMBER_OF_FLOORS + 1;
                 boolean foundMin = false;
 
+                System.out.println(bank + " check people for min");
+
                 // Linear scan everyone on elevator for: min that is >currentFloor
                 for (Person person : peopleOnElevator){
-                    if (person.desiredFloor > currentFloor && person.desiredFloor < min){
+                    if (person.desiredFloor > currentFloor && person.desiredFloor < min && !skippedFloors[person.desiredFloor]){
                         min = person.desiredFloor;
 
                         if (!foundMin){
@@ -142,11 +164,15 @@ public class Elevator {
                     }
                 }
 
+                System.out.println(bank + " check people UP press");
+
                 // Linear scan floors above for UP button pressed
                 for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
-
-                    if (building.floors[i].isUpPressed){
+                    System.out.println(i + " 1");
+                    if (building.floors[i].isUpPressed && !skippedFloors[i]){
+                        System.out.println("2");
                         if (building.floors[i].floorLevel < min){
+                            System.out.println("3");
                             min = building.floors[i].floorLevel;
 
                             if (!foundMin){
@@ -162,10 +188,14 @@ public class Elevator {
                     break;
                 }
                 else {
+                    System.out.println(bank + " SADLY check people DOWN press");
                     // Else, search above for DOWN button pressed
                     for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
-                        if (building.floors[i].isDownPressed){
+                        System.out.println("floor " + i);
+                        if (building.floors[i].isDownPressed && !skippedFloors[i]){
+                            System.out.println("1");
                             if (building.floors[i].floorLevel < min){
+                                System.out.println("2");
                                 min = building.floors[i].floorLevel;
 
                                 if (!foundMin){
@@ -183,6 +213,7 @@ public class Elevator {
                     nextFloorTarget = min;
                     break;
                 }
+                System.out.println(bank + " NO MIN");
                 // Else loop once more if first loop
             }
 
@@ -191,9 +222,11 @@ public class Elevator {
                 int max = -1;
                 boolean foundMax = false;
 
+                System.out.println(bank + " check people for max");
+
                 // Linear scan everyone on elevator for: max that is <currentFloor
                 for (Person person : peopleOnElevator){
-                    if (person.desiredFloor < currentFloor && person.desiredFloor > max){
+                    if (person.desiredFloor < currentFloor && person.desiredFloor > max  && !skippedFloors[person.desiredFloor]){
                         max = person.desiredFloor;
 
                         if (!foundMax){
@@ -202,11 +235,15 @@ public class Elevator {
                     }
                 }
 
+                System.out.println(bank + " check people DOWN press");
+
                 // Linear scan floors below for DOWN button pressed
                 for (int i = currentFloor - 1; i >= 0; i--){
-
-                    if (building.floors[i].isDownPressed){
+                    System.out.println(i + " 1");
+                    if (building.floors[i].isDownPressed && !skippedFloors[i]){
+                        System.out.println("2");
                         if (building.floors[i].floorLevel > max){
+                            System.out.println("3");
                             max = building.floors[i].floorLevel;
 
                             if (!foundMax){
@@ -222,10 +259,14 @@ public class Elevator {
                     break;
                 }
                 else {
+                    System.out.println(bank + " SADLY check people UP press");
                     // Else, search below for UP button pressed
                     for (int i = currentFloor - 1; i >= 0; i--){
-                        if (building.floors[i].isUpPressed){
+                        System.out.println("floor " + i);
+                        if (building.floors[i].isUpPressed && !skippedFloors[i]){
+                            System.out.println("1");
                             if (building.floors[i].floorLevel > max){
+                                System.out.println("2");
                                 max = building.floors[i].floorLevel;
 
                                 if (!foundMax){
@@ -242,24 +283,24 @@ public class Elevator {
                     nextFloorTarget = max;
                     break;
                 }
+                System.out.println(bank + " NO MAX");
                 // Else loop once more if first loop
             }
         }
-
         // Update finishedNextFloorTick
         if (nextFloorTarget != -1){
             finishedNextFloorTick = Building.LEVELS_TRAVELLED_TO_TIME[Math.abs(currentFloor - nextFloorTarget)];
         }
         else {
-            // Handle G and Top floor
+//            System.out.println(bank + " " + Boolean.toString(isGoingUp) + " -> " + Boolean.toString(!isGoingUp));
+//            // Handle G and Top floor
             isGoingUp = !isGoingUp;
-            loadElevator();
-            if (peopleOnElevator.isEmpty()){
-                noMoreTargets = true;
-            }
-            else{
-                getToNextFloorStart();
-            }
+//            if (peopleOnElevator.isEmpty()){
+//                noMoreTargets = true;
+//            }
+//            else{
+//                getToNextFloorStart();
+//            }
         }
     }
 
