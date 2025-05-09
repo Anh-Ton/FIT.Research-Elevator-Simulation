@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main {
-    public static final int SIMULATION_ITERATIONS_PER_RATIO = 500;
+    public static final int SIMULATION_ITERATIONS_PER_RATIO = 3000;
     public static final int MAX_CELL_ROW_LENGTH = 50;
 
     public static void main(String[] args) {
@@ -83,6 +83,30 @@ public class Main {
                 {},
                 {},
                 {},
+                {1,2,3,4,5,6,7,8},
+                {1,2,3,4,5,6,7,8},
+                {1,2,3,4,5,6,7,8}
+        };
+        expressConfigurations.add(threeExpressV2);
+        configNames.add("threeExpressV2");
+
+        int[][] fourExpress = {
+                {},
+                {},
+                {},
+                {1,2,3 ,6,7,8,9,10,11},
+                {1,2,3,4,5, 8,9,10,11},
+                {1,2,3,4,5,6,7, 10,11},
+                {1,2,3,4,5,6,7,8,9 }
+        };
+        expressConfigurations.add(fourExpress);
+        configNames.add("fourExpress");
+
+        int[][] fourExpressV2 = {
+                {},
+                {},
+                {},
+                {1,2,3,4,5,6,7,8},
                 {1,2,3,4,5,6,7,8},
                 {1,2,3,4,5,6,7,8},
                 {1,2,3,4,5,6,7,8}

@@ -5,17 +5,24 @@ public class Floor {
     public ArrayList<Person> peopleWaiting = new ArrayList<>();
     public ArrayList<Person> peopleAtDestination = new ArrayList<>();
     public int floorLevel;
+
+    // Buttons
     public boolean isUpPressed;
     public boolean isDownPressed;
+    public boolean isExpUpPressed;
+    public boolean isExpDownPressed;
 
 
     public Floor(int floorLevel, ArrayList<boolean[]> boolSkipFloorsArray){
         this.floorLevel = floorLevel;
+
         this.isUpPressed = false;
         this.isDownPressed = false;
+        this.isExpUpPressed = false;
+        this.isExpDownPressed = false;
 
         if (floorLevel == 0){
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 9; i++) {
                 peopleWaiting.add(new Person(floorLevel, boolSkipFloorsArray));
             }
         }
@@ -33,17 +40,29 @@ public class Floor {
     public void updateUpDownButtons(){
         this.isUpPressed = false;
         this.isDownPressed = false;
+        this.isExpUpPressed = false;
+        this.isExpDownPressed = false;
 
         for (Person person : peopleWaiting){
-            if (isDownPressed && isUpPressed){
+            if (isDownPressed && isUpPressed && isExpUpPressed && isExpDownPressed){
                 return;
             }
 
-            if (person.desiredFloor < floorLevel){
-                isDownPressed = true;
+            if (person.wantsExpress){
+                if (person.desiredFloor < floorLevel){
+                    isExpDownPressed = true;
+                }
+                else if (person.desiredFloor > floorLevel){
+                    isExpUpPressed = true;
+                }
             }
-            else if (person.desiredFloor > floorLevel){
-                isUpPressed = true;
+            else {
+                if (person.desiredFloor < floorLevel){
+                    isDownPressed = true;
+                }
+                else if (person.desiredFloor > floorLevel){
+                    isUpPressed = true;
+                }
             }
         }
     }
@@ -87,6 +106,23 @@ public class Floor {
         returnString += "|";
         if (isDownPressed){
             returnString += "DOWN";
+        }
+        else {
+            returnString += "-";
+        }
+        returnString += ") ";
+
+        // EXPRESS UP and DOWN buttons
+        returnString += "(";
+        if (isExpUpPressed){
+            returnString += "E-UP";
+        }
+        else {
+            returnString += "-";
+        }
+        returnString += "|";
+        if (isExpDownPressed){
+            returnString += "E-DOWN";
         }
         else {
             returnString += "-";

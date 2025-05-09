@@ -174,13 +174,28 @@ public class Elevator {
                 }
 
                 // Linear scan floors above for UP button pressed
-                for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
-                    if (building.floors[i].isUpPressed && !skippedFloors[i]){
-                        if (building.floors[i].floorLevel < min){
-                            min = building.floors[i].floorLevel;
+                if (isExpress){
+                    for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
+                        if ((building.floors[i].isUpPressed || building.floors[i].isExpUpPressed) && !skippedFloors[i]){
+                            if (building.floors[i].floorLevel < min){
+                                min = building.floors[i].floorLevel;
 
-                            if (!foundMin){
-                                foundMin = true;
+                                if (!foundMin){
+                                    foundMin = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
+                        if (building.floors[i].isUpPressed && !skippedFloors[i]){
+                            if (building.floors[i].floorLevel < min){
+                                min = building.floors[i].floorLevel;
+
+                                if (!foundMin){
+                                    foundMin = true;
+                                }
                             }
                         }
                     }
@@ -193,13 +208,28 @@ public class Elevator {
                 }
                 else {
                     // Else, search above for DOWN button pressed
-                    for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
-                        if (building.floors[i].isDownPressed && !skippedFloors[i]){
-                            if (building.floors[i].floorLevel < min){
-                                min = building.floors[i].floorLevel;
+                    if (isExpress){
+                        for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
+                            if ((building.floors[i].isDownPressed || building.floors[i].isExpDownPressed) && !skippedFloors[i]){
+                                if (building.floors[i].floorLevel < min){
+                                    min = building.floors[i].floorLevel;
 
-                                if (!foundMin){
-                                    foundMin = true;
+                                    if (!foundMin){
+                                        foundMin = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
+                            if (building.floors[i].isDownPressed && !skippedFloors[i]){
+                                if (building.floors[i].floorLevel < min){
+                                    min = building.floors[i].floorLevel;
+
+                                    if (!foundMin){
+                                        foundMin = true;
+                                    }
                                 }
                             }
                         }
@@ -233,27 +263,9 @@ public class Elevator {
                 }
 
                 // Linear scan floors below for DOWN button pressed
-                for (int i = currentFloor - 1; i >= 0; i--){
-                    if (building.floors[i].isDownPressed && !skippedFloors[i]){
-                        if (building.floors[i].floorLevel > max){
-                            max = building.floors[i].floorLevel;
-
-                            if (!foundMax){
-                                foundMax = true;
-                            }
-                        }
-                    }
-                }
-
-                // If found, set target
-                if (foundMax){
-                    nextFloorTarget = max;
-                    break;
-                }
-                else {
-                    // Else, search below for UP button pressed
+                if (isExpress){
                     for (int i = currentFloor - 1; i >= 0; i--){
-                        if (building.floors[i].isUpPressed && !skippedFloors[i]){
+                        if ((building.floors[i].isDownPressed || building.floors[i].isExpDownPressed) && !skippedFloors[i]){
                             if (building.floors[i].floorLevel > max){
                                 max = building.floors[i].floorLevel;
 
@@ -263,6 +275,56 @@ public class Elevator {
                             }
                         }
                     }
+                }
+                else {
+                    for (int i = currentFloor - 1; i >= 0; i--){
+                        if (building.floors[i].isDownPressed && !skippedFloors[i]){
+                            if (building.floors[i].floorLevel > max){
+                                max = building.floors[i].floorLevel;
+
+                                if (!foundMax){
+                                    foundMax = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                // If found, set target
+                if (foundMax){
+                    nextFloorTarget = max;
+                    break;
+                }
+                else {
+                    // Else, search below for UP button pressed
+                    if (isExpress){
+                        for (int i = currentFloor - 1; i >= 0; i--){
+                            if ((building.floors[i].isUpPressed || building.floors[i].isExpUpPressed) && !skippedFloors[i]){
+                                if (building.floors[i].floorLevel > max){
+                                    max = building.floors[i].floorLevel;
+
+                                    if (!foundMax){
+                                        foundMax = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        for (int i = currentFloor - 1; i >= 0; i--){
+                            if (building.floors[i].isUpPressed && !skippedFloors[i]){
+                                if (building.floors[i].floorLevel > max){
+                                    max = building.floors[i].floorLevel;
+
+                                    if (!foundMax){
+                                        foundMax = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     // Flip direction
                     isGoingUp = true;
                 }
