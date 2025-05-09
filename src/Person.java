@@ -1,10 +1,12 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
 
 public class Person {
     public int desiredFloor;
     public boolean wantsExpress;
+    public boolean[] wantedBanks;
 
     public Person(int startingFloor, ArrayList<boolean[]> boolSkipFloorsArray) {
         Random random = new Random();
@@ -33,8 +35,11 @@ public class Person {
 
     public void updateWantsExpress(int startingFloor, ArrayList<boolean[]> boolSkipFloorsArray) {
         wantsExpress = false;
+        wantedBanks = new boolean[Building.NUMBER_OF_ELEVATORS];
+        Arrays.fill(wantedBanks, false);
 
-        for (boolean[] elevatorSkippedFloors : boolSkipFloorsArray) {
+        for (int i = 0; i < boolSkipFloorsArray.size(); i++) {
+            boolean[] elevatorSkippedFloors = boolSkipFloorsArray.get(i);
 
             if (!elevatorSkippedFloors[desiredFloor] && !elevatorSkippedFloors[startingFloor]) {
                 // Check if we need to reverse IntStream
@@ -42,7 +47,7 @@ public class Person {
                     for (int floor: IntStream.rangeClosed(startingFloor, desiredFloor).toArray()){
                         if (elevatorSkippedFloors[floor]) {
                             wantsExpress = true;
-                            return;
+                            wantedBanks[i] = true;
                         }
                     }
                 }
@@ -51,7 +56,7 @@ public class Person {
                     for (int floor: IntStream.rangeClosed(desiredFloor, startingFloor).toArray()){
                         if (elevatorSkippedFloors[floor]) {
                             wantsExpress = true;
-                            return;
+                            wantedBanks[i] = true;
                         }
                     }
                 }
@@ -67,6 +72,12 @@ public class Person {
 
         if (wantsExpress) {
             returnString += " E";
+        }
+
+        for (int i = 0; i < wantedBanks.length; i++) {
+            if (wantedBanks[i]) {
+                returnString += "-B" + i;
+            }
         }
 
         returnString += ")";

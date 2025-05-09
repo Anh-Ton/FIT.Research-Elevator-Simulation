@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Floor {
     public Elevator[] banks = new Elevator[Building.NUMBER_OF_ELEVATORS];
@@ -9,8 +10,8 @@ public class Floor {
     // Buttons
     public boolean isUpPressed;
     public boolean isDownPressed;
-    public boolean isExpUpPressed;
-    public boolean isExpDownPressed;
+    public boolean[] isExpBankUpPressed;
+    public boolean[] isExpBankDownPressed;
 
 
     public Floor(int floorLevel, ArrayList<boolean[]> boolSkipFloorsArray){
@@ -18,8 +19,11 @@ public class Floor {
 
         this.isUpPressed = false;
         this.isDownPressed = false;
-        this.isExpUpPressed = false;
-        this.isExpDownPressed = false;
+        this.isExpBankUpPressed = new boolean[Building.NUMBER_OF_ELEVATORS];
+        this.isExpBankDownPressed = new boolean[Building.NUMBER_OF_ELEVATORS];
+
+        Arrays.fill(isExpBankUpPressed, false);
+        Arrays.fill(isExpBankDownPressed, false);
 
         if (floorLevel == 0){
             for (int i = 0; i < 9; i++) {
@@ -40,20 +44,28 @@ public class Floor {
     public void updateUpDownButtons(){
         this.isUpPressed = false;
         this.isDownPressed = false;
-        this.isExpUpPressed = false;
-        this.isExpDownPressed = false;
+
+        Arrays.fill(isExpBankUpPressed, false);
+        Arrays.fill(isExpBankDownPressed, false);
 
         for (Person person : peopleWaiting){
-            if (isDownPressed && isUpPressed && isExpUpPressed && isExpDownPressed){
-                return;
-            }
 
             if (person.wantsExpress){
                 if (person.desiredFloor < floorLevel){
-                    isExpDownPressed = true;
+
+                    for (int i = 0; i < person.wantedBanks.length; i++){
+                        if (person.wantedBanks[i]){
+                            isExpBankDownPressed[i] = true;
+                        }
+                    }
                 }
                 else if (person.desiredFloor > floorLevel){
-                    isExpUpPressed = true;
+
+                    for (int i = 0; i < person.wantedBanks.length; i++){
+                        if (person.wantedBanks[i]){
+                            isExpBankUpPressed[i] = true;
+                        }
+                    }
                 }
             }
             else {
@@ -112,22 +124,26 @@ public class Floor {
         }
         returnString += ") ";
 
-        // EXPRESS UP and DOWN buttons
-        returnString += "(";
-        if (isExpUpPressed){
-            returnString += "E-UP";
+        // EXPRESS UP and DOWN buttons V2
+        for (int i = 0; i < isExpBankUpPressed.length; i++){
+            if (isExpBankUpPressed[i] || isExpBankDownPressed[i]){
+                returnString += "(";
+                if (isExpBankUpPressed[i]){
+                    returnString += "B" + i + "-UP";
+                }
+                else {
+                    returnString += "-";
+                }
+                returnString += "|";
+                if (isExpBankDownPressed[i]){
+                    returnString += "B" + i + "-DOWN";
+                }
+                else {
+                    returnString += "-";
+                }
+                returnString += ") ";
+            }
         }
-        else {
-            returnString += "-";
-        }
-        returnString += "|";
-        if (isExpDownPressed){
-            returnString += "E-DOWN";
-        }
-        else {
-            returnString += "-";
-        }
-        returnString += ") ";
 
         // Waiting Queue
         returnString += "Waiting: ";

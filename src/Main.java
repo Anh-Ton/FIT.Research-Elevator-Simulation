@@ -111,8 +111,8 @@ public class Main {
                 {1,2,3,4,5,6,7,8},
                 {1,2,3,4,5,6,7,8}
         };
-        expressConfigurations.add(threeExpressV2);
-        configNames.add("threeExpressV2");
+        expressConfigurations.add(fourExpressV2);
+        configNames.add("fourExpressV2");
 
         if (runWithVisuals) {
             for (int[][] expressConfiguration : expressConfigurations) {

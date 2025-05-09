@@ -54,18 +54,16 @@ public class Building {
             System.out.println(this);
 
             try {
-                Thread.sleep(0);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-            }
-
-            if(secondElapsed > 400){
-                Scanner scanner = new Scanner(System.in);
-                scanner.nextLine();
             }
         }
 
         System.out.println("\n\nIt took a total of " + secondElapsed + " seconds to move everyone");
+
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
     }
 
     public void run(){
@@ -83,12 +81,14 @@ public class Building {
         ArrayList<boolean[]> convertedBoolArray = new ArrayList<>();
 
         for (int i = 0; i < elevatorSetup.length; i++) {
-            if (elevatorSetup[i].length == 0) {
-                continue;
-            }
 
             boolean[] boolArray = new boolean[Building.NUMBER_OF_FLOORS];
             Arrays.fill(boolArray, false);
+
+            if (elevatorSetup[i].length == 0) {
+                convertedBoolArray.add(boolArray);
+                continue;
+            }
 
             for (int skippedFloor: elevatorSetup[i]) {
                 boolArray[skippedFloor] = true;

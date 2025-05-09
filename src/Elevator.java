@@ -176,7 +176,7 @@ public class Elevator {
                 // Linear scan floors above for UP button pressed
                 if (isExpress){
                     for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
-                        if ((building.floors[i].isUpPressed || building.floors[i].isExpUpPressed) && !skippedFloors[i]){
+                        if ((building.floors[i].isUpPressed || building.floors[i].isExpBankUpPressed[bank]) && !skippedFloors[i]){
                             if (building.floors[i].floorLevel < min){
                                 min = building.floors[i].floorLevel;
 
@@ -210,7 +210,7 @@ public class Elevator {
                     // Else, search above for DOWN button pressed
                     if (isExpress){
                         for (int i = currentFloor + 1; i < Building.NUMBER_OF_FLOORS; i++){
-                            if ((building.floors[i].isDownPressed || building.floors[i].isExpDownPressed) && !skippedFloors[i]){
+                            if ((building.floors[i].isDownPressed || building.floors[i].isExpBankDownPressed[bank]) && !skippedFloors[i]){
                                 if (building.floors[i].floorLevel < min){
                                     min = building.floors[i].floorLevel;
 
@@ -265,7 +265,7 @@ public class Elevator {
                 // Linear scan floors below for DOWN button pressed
                 if (isExpress){
                     for (int i = currentFloor - 1; i >= 0; i--){
-                        if ((building.floors[i].isDownPressed || building.floors[i].isExpDownPressed) && !skippedFloors[i]){
+                        if ((building.floors[i].isDownPressed || building.floors[i].isExpBankDownPressed[bank]) && !skippedFloors[i]){
                             if (building.floors[i].floorLevel > max){
                                 max = building.floors[i].floorLevel;
 
@@ -300,7 +300,7 @@ public class Elevator {
                     // Else, search below for UP button pressed
                     if (isExpress){
                         for (int i = currentFloor - 1; i >= 0; i--){
-                            if ((building.floors[i].isUpPressed || building.floors[i].isExpUpPressed) && !skippedFloors[i]){
+                            if ((building.floors[i].isUpPressed || building.floors[i].isExpBankUpPressed[bank]) && !skippedFloors[i]){
                                 if (building.floors[i].floorLevel > max){
                                     max = building.floors[i].floorLevel;
 
@@ -362,6 +362,10 @@ public class Elevator {
     public String longString(){
         String returnString = "";
 
+        if (isExpress){
+            returnString += "E-";
+        }
+
         returnString += "Bank " + bank +
                         " | Current floor: " + currentFloor;
         if(nextFloorTarget == -1){
@@ -397,8 +401,6 @@ public class Elevator {
         for (Person person : peopleOnElevator){
             returnString += person + " ";
         }
-
-        returnString += " (Express " + isExpress + ")";
 
         return returnString;
     }
