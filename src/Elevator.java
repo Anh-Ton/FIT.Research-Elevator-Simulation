@@ -341,15 +341,7 @@ public class Elevator {
             finishedNextFloorTick = Building.LEVELS_TRAVELLED_TO_TIME[Math.abs(currentFloor - nextFloorTarget)];
         }
         else {
-//            System.out.println(bank + " " + Boolean.toString(isGoingUp) + " -> " + Boolean.toString(!isGoingUp));
-//            // Handle G and Top floor
             isGoingUp = !isGoingUp;
-//            if (peopleOnElevator.isEmpty()){
-//                noMoreTargets = true;
-//            }
-//            else{
-//                getToNextFloorStart();
-//            }
         }
     }
 
