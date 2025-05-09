@@ -35,8 +35,9 @@ public class Person {
         wantsExpress = false;
 
         for (boolean[] elevatorSkippedFloors : boolSkipFloorsArray) {
-            if (!elevatorSkippedFloors[desiredFloor] && !elevatorSkippedFloors[startingFloor]) {
 
+            if (!elevatorSkippedFloors[desiredFloor] && !elevatorSkippedFloors[startingFloor]) {
+                // Check if we need to reverse IntStream
                 if (startingFloor < desiredFloor) {
                     for (int floor: IntStream.rangeClosed(startingFloor, desiredFloor).toArray()){
                         if (elevatorSkippedFloors[floor]) {
@@ -45,6 +46,7 @@ public class Person {
                         }
                     }
                 }
+
                 else {
                     for (int floor: IntStream.rangeClosed(desiredFloor, startingFloor).toArray()){
                         if (elevatorSkippedFloors[floor]) {
@@ -56,6 +58,7 @@ public class Person {
 
             }
         }
+
     }
 
     @Override

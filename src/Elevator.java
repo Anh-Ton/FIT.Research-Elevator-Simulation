@@ -94,12 +94,21 @@ public class Elevator {
 
         int originalSize = peopleWaiting.size();
         for (int i = 0; i < originalSize; i++){
+            // Check full
             if (peopleOnElevator.size() >= maxElevatorCapacity){
                 return;
             }
 
             Person person = peopleWaiting.removeFirst();
+
+            // Don't Pick Up Skipped Destination
             if (skippedFloors[person.desiredFloor]){
+                peopleWaiting.add(person);
+                continue;
+            }
+
+            // Don't Pick Up Express Person if Not Express Elevator
+            if (person.wantsExpress && !isExpress){
                 peopleWaiting.add(person);
                 continue;
             }

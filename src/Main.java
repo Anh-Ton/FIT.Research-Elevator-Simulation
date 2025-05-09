@@ -12,48 +12,48 @@ public class Main {
         System.out.println();
 
         // -------------------------- //
-        boolean runWithVisals = true;
+        boolean runWithVisuals = false;
         // -------------------------- //
 
         ArrayList<int[][]> expressConfigurations = new ArrayList<>();
         ArrayList<String> configNames = new ArrayList<>();
 
-//        int[][] noExpress = {
-//                {},
-//                {},
-//                {},
-//                {},
-//                {},
-//                {},
-//                {}
-//        };
-//        expressConfigurations.add(noExpress);
-//        configNames.add("noExpress");
+        int[][] noExpress = {
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {}
+        };
+        expressConfigurations.add(noExpress);
+        configNames.add("noExpress");
 
-//        int[][] oneExpress = {
-//                {},
-//                {},
-//                {},
-//                {},
-//                {},
-//                {},
-//                {1,2,3,4,5,6,7,8}
-//        };
-//        expressConfigurations.add(oneExpress);
-//        configNames.add("oneExpress");
+        int[][] oneExpress = {
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {1,2,3,4,5,6,7,8}
+        };
+        expressConfigurations.add(oneExpress);
+        configNames.add("oneExpress");
 
-//        int[][] twoExpress = {
-//                {},
-//                {},
-//                {},
-//                {},
-//                {},
-//                {1,2,3,4,5, 9,10,11},
-//                {1,2,3,4,5,6,7,8}
-//        };
-//        expressConfigurations.add(twoExpress);
-//        configNames.add("twoExpress");
-//
+        int[][] twoExpress = {
+                {},
+                {},
+                {},
+                {},
+                {},
+                {1,2,3,4,5, 9,10,11},
+                {1,2,3,4,5,6,7,8}
+        };
+        expressConfigurations.add(twoExpress);
+        configNames.add("twoExpress");
+
         int[][] twoExpressV2 = {
                 {},
                 {},
@@ -65,32 +65,32 @@ public class Main {
         };
         expressConfigurations.add(twoExpressV2);
         configNames.add("twoExpressV2");
-//
-//        int[][] threeExpress = {
-//                {},
-//                {},
-//                {},
-//                {},
-//                {1,2, 6,7,8,9,10,11},
-//                {1,2,3,4,5, 9,10,11},
-//                {1,2,3,4,5,6,7,8}
-//        };
-//        expressConfigurations.add(threeExpress);
-//        configNames.add("threeExpress");
-//
-//        int[][] threeExpressV2 = {
-//                {},
-//                {},
-//                {},
-//                {},
-//                {1,2,3,4,5,6,7,8},
-//                {1,2,3,4,5,6,7,8},
-//                {1,2,3,4,5,6,7,8}
-//        };
-//        expressConfigurations.add(threeExpressV2);
-//        configNames.add("threeExpressV2");
 
-        if (runWithVisals) {
+        int[][] threeExpress = {
+                {},
+                {},
+                {},
+                {},
+                {1,2, 6,7,8,9,10,11},
+                {1,2,3,4,5, 9,10,11},
+                {1,2,3,4,5,6,7,8}
+        };
+        expressConfigurations.add(threeExpress);
+        configNames.add("threeExpress");
+
+        int[][] threeExpressV2 = {
+                {},
+                {},
+                {},
+                {},
+                {1,2,3,4,5,6,7,8},
+                {1,2,3,4,5,6,7,8},
+                {1,2,3,4,5,6,7,8}
+        };
+        expressConfigurations.add(threeExpressV2);
+        configNames.add("threeExpressV2");
+
+        if (runWithVisuals) {
             for (int[][] expressConfiguration : expressConfigurations) {
                 for (int i = 0; i < 1; i++) {
                     Building menziesBuilding = new Building(expressConfiguration);
