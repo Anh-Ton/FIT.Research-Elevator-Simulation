@@ -1,19 +1,26 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Building {
+    // ------------------------------------------- //
     public final static int NUMBER_OF_FLOORS = 12;
     public final static int NUMBER_OF_ELEVATORS = 7;
+    // ------------------------------------------- //
+
     // DATA: 0, 17.78, 19.12, 20.23, 21.53, 23.21, 25.12, 26.43, 27.98, 30.52, 32.33, 33.78
     public final static int[] LEVELS_TRAVELLED_TO_TIME= {0, 18, 19, 20, 22, 23, 25, 26, 28, 31, 32, 34};
-    public Floor[] floors = new Floor[NUMBER_OF_FLOORS];
-    public Elevator[] elevators = new Elevator[NUMBER_OF_ELEVATORS];
+    public final Floor[] floors = new Floor[NUMBER_OF_FLOORS];
+    public final Elevator[] elevators = new Elevator[NUMBER_OF_ELEVATORS];
     public int secondElapsed;
 
     public Building(int[][] elevatorSetup){
+        ArrayList<boolean[]> boolSkipFloorsArray = convertElevatorSetupToBoolArray(elevatorSetup);
+
         // Initialise all floors
         for (int i = 0; i < floors.length; i++){
-            floors[i] = new Floor(i);
+            floors[i] = new Floor(i, boolSkipFloorsArray);
             // Update up down buttons
             floors[i].updateUpDownButtons();
         }
@@ -33,6 +40,8 @@ public class Building {
     }
 
     public void runWithVisuals(){
+        System.out.println(this);
+
         while (!isComplete()){
             secondElapsed++;
 
@@ -67,6 +76,28 @@ public class Building {
                 elevator.tick();
             }
         }
+    }
+
+    public ArrayList<boolean[]> convertElevatorSetupToBoolArray(int[][] elevatorSetup) {
+
+        ArrayList<boolean[]> convertedBoolArray = new ArrayList<>();
+
+        for (int i = 0; i < elevatorSetup.length; i++) {
+            if (elevatorSetup[i].length == 0) {
+                continue;
+            }
+
+            boolean[] boolArray = new boolean[Building.NUMBER_OF_FLOORS];
+            Arrays.fill(boolArray, false);
+
+            for (int skippedFloor: elevatorSetup[i]) {
+                boolArray[skippedFloor] = true;
+            }
+
+            convertedBoolArray.add(boolArray);
+        }
+
+        return convertedBoolArray;
     }
 
     public boolean isComplete(){

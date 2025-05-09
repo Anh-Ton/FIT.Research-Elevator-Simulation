@@ -9,19 +9,19 @@ public class Floor {
     public boolean isDownPressed;
 
 
-    public Floor(int floorLevel){
+    public Floor(int floorLevel, ArrayList<boolean[]> boolSkipFloorsArray){
         this.floorLevel = floorLevel;
         this.isUpPressed = false;
         this.isDownPressed = false;
 
         if (floorLevel == 0){
             for (int i = 0; i < 7; i++) {
-                peopleWaiting.add(new Person(floorLevel));
+                peopleWaiting.add(new Person(floorLevel, boolSkipFloorsArray));
             }
         }
         else{
             for (int i = 0; i < 3; i++) {
-                peopleWaiting.add(new Person(floorLevel));
+                peopleWaiting.add(new Person(floorLevel, boolSkipFloorsArray));
             }
         }
     }

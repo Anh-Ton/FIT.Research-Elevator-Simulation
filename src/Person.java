@@ -1,14 +1,16 @@
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 public class Person {
     public int desiredFloor;
+    public boolean wantsExpress;
 
-    public Person(int startingFloor) {
+    public Person(int startingFloor, ArrayList<boolean[]> boolSkipFloorsArray) {
         Random random = new Random();
 
         if (startingFloor == 0) {
-            int randomFloor = random.nextInt(Building.NUMBER_OF_FLOORS - 1) + 1;
-            desiredFloor = randomFloor;
+            desiredFloor = random.nextInt(Building.NUMBER_OF_FLOORS - 1) + 1;
         }
         else {
             double randomDouble = random.nextDouble();
@@ -25,10 +27,47 @@ public class Person {
                 }
             }
         }
+
+        updateWantsExpress(startingFloor, boolSkipFloorsArray);
+    }
+
+    public void updateWantsExpress(int startingFloor, ArrayList<boolean[]> boolSkipFloorsArray) {
+        wantsExpress = false;
+
+        for (boolean[] elevatorSkippedFloors : boolSkipFloorsArray) {
+            if (!elevatorSkippedFloors[desiredFloor] && !elevatorSkippedFloors[startingFloor]) {
+
+                if (startingFloor < desiredFloor) {
+                    for (int floor: IntStream.rangeClosed(startingFloor, desiredFloor).toArray()){
+                        if (elevatorSkippedFloors[floor]) {
+                            wantsExpress = true;
+                            return;
+                        }
+                    }
+                }
+                else {
+                    for (int floor: IntStream.rangeClosed(desiredFloor, startingFloor).toArray()){
+                        if (elevatorSkippedFloors[floor]) {
+                            wantsExpress = true;
+                            return;
+                        }
+                    }
+                }
+
+            }
+        }
     }
 
     @Override
     public String toString() {
-        return "P(" + desiredFloor + ")";
+        String returnString = "P(" + desiredFloor;
+
+        if (wantsExpress) {
+            returnString += " E";
+        }
+
+        returnString += ")";
+
+        return returnString;
     }
 }
