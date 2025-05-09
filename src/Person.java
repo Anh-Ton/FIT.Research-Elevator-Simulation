@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 public class Person {
     public int desiredFloor;
@@ -41,25 +40,40 @@ public class Person {
         for (int i = 0; i < boolSkipFloorsArray.size(); i++) {
             boolean[] elevatorSkippedFloors = boolSkipFloorsArray.get(i);
 
+            boolean allFalse = true;
+            for (boolean elevatorSkippedFloor : elevatorSkippedFloors) {
+
+                if (elevatorSkippedFloor) {
+                    allFalse = false;
+                    break;
+                }
+            }
+            if (allFalse){
+                continue;
+            }
+
             if (!elevatorSkippedFloors[desiredFloor] && !elevatorSkippedFloors[startingFloor]) {
                 // Check if we need to reverse IntStream
-                if (startingFloor < desiredFloor) {
-                    for (int floor: IntStream.rangeClosed(startingFloor, desiredFloor).toArray()){
-                        if (elevatorSkippedFloors[floor]) {
-                            wantsExpress = true;
-                            wantedBanks[i] = true;
-                        }
-                    }
-                }
+//                if (startingFloor < desiredFloor) {
+//                    for (int floor: IntStream.rangeClosed(startingFloor, desiredFloor).toArray()){
+//                        if (elevatorSkippedFloors[floor]) {
+//                            wantsExpress = true;
+//                            wantedBanks[i] = true;
+//                        }
+//                    }
+//                }
+//
+//                else {
+//                    for (int floor: IntStream.rangeClosed(desiredFloor, startingFloor).toArray()){
+//                        if (elevatorSkippedFloors[floor]) {
+//                            wantsExpress = true;
+//                            wantedBanks[i] = true;
+//                        }
+//                    }
+//                }
 
-                else {
-                    for (int floor: IntStream.rangeClosed(desiredFloor, startingFloor).toArray()){
-                        if (elevatorSkippedFloors[floor]) {
-                            wantsExpress = true;
-                            wantedBanks[i] = true;
-                        }
-                    }
-                }
+                wantsExpress = true;
+                wantedBanks[i] = true;
 
             }
         }

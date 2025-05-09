@@ -12,7 +12,7 @@ public class Main {
         System.out.println();
 
         // -------------------------- //
-        boolean runWithVisuals = true;
+        boolean runWithVisuals = false;
         // -------------------------- //
 
         ArrayList<int[][]> expressConfigurations = new ArrayList<>();
