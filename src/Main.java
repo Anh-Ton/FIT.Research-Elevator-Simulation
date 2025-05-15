@@ -4,16 +4,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main {
+    // -------------------------------------------------------- //
+    public final static int NUMBER_OF_FLOORS = 12;
+    public final static int NUMBER_OF_ELEVATORS = 7;
     public static final int SIMULATION_ITERATIONS_PER_RATIO = 3000;
     public static final int MAX_CELL_ROW_LENGTH = 50;
+    public static final double PERCENTAGE_COMPLETE_NEEDED = 0.8;
+
+    public static final boolean RUN_WITH_VISUALS = false;
+    // -------------------------------------------------------- //
 
     public static void main(String[] args) {
 
         System.out.println();
-
-        // -------------------------- //
-        boolean runWithVisuals = false;
-        // -------------------------- //
 
         ArrayList<int[][]> expressConfigurations = new ArrayList<>();
         ArrayList<String> configNames = new ArrayList<>();
@@ -54,17 +57,17 @@ public class Main {
         expressConfigurations.add(twoExpress);
         configNames.add("twoExpress");
 
-        int[][] twoExpressV2 = {
-                {},
-                {},
-                {},
-                {},
-                {},
-                {1,2,3,4,5,6,7,8},
-                {1,2,3,4,5,6,7,8}
-        };
-        expressConfigurations.add(twoExpressV2);
-        configNames.add("twoExpressV2");
+//        int[][] twoExpressV2 = {
+//                {},
+//                {},
+//                {},
+//                {},
+//                {},
+//                {1,2,3,4,5,6,7,8},
+//                {1,2,3,4,5,6,7,8}
+//        };
+//        expressConfigurations.add(twoExpressV2);
+//        configNames.add("twoExpressV2");
 
         int[][] threeExpress = {
                 {},
@@ -78,17 +81,17 @@ public class Main {
         expressConfigurations.add(threeExpress);
         configNames.add("threeExpress");
 
-        int[][] threeExpressV2 = {
-                {},
-                {},
-                {},
-                {},
-                {1,2,3,4,5,6,7,8},
-                {1,2,3,4,5,6,7,8},
-                {1,2,3,4,5,6,7,8}
-        };
-        expressConfigurations.add(threeExpressV2);
-        configNames.add("threeExpressV2");
+//        int[][] threeExpressV2 = {
+//                {},
+//                {},
+//                {},
+//                {},
+//                {1,2,3,4,5,6,7,8},
+//                {1,2,3,4,5,6,7,8},
+//                {1,2,3,4,5,6,7,8}
+//        };
+//        expressConfigurations.add(threeExpressV2);
+//        configNames.add("threeExpressV2");
 
         int[][] fourExpress = {
                 {},
@@ -102,19 +105,19 @@ public class Main {
         expressConfigurations.add(fourExpress);
         configNames.add("fourExpress");
 
-        int[][] fourExpressV2 = {
-                {},
-                {},
-                {},
-                {1,2,3,4,5,6,7,8},
-                {1,2,3,4,5,6,7,8},
-                {1,2,3,4,5,6,7,8},
-                {1,2,3,4,5,6,7,8}
-        };
-        expressConfigurations.add(fourExpressV2);
-        configNames.add("fourExpressV2");
+//        int[][] fourExpressV2 = {
+//                {},
+//                {},
+//                {},
+//                {1,2,3,4,5,6,7,8},
+//                {1,2,3,4,5,6,7,8},
+//                {1,2,3,4,5,6,7,8},
+//                {1,2,3,4,5,6,7,8}
+//        };
+//        expressConfigurations.add(fourExpressV2);
+//        configNames.add("fourExpressV2");
 
-        if (runWithVisuals) {
+        if (RUN_WITH_VISUALS) {
             for (int[][] expressConfiguration : expressConfigurations) {
                 for (int i = 0; i < 1; i++) {
                     Building menziesBuilding = new Building(expressConfiguration);

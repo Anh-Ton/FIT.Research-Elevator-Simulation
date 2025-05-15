@@ -2,10 +2,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Floor {
-    public Elevator[] banks = new Elevator[Building.NUMBER_OF_ELEVATORS];
+    public Elevator[] banks = new Elevator[Main.NUMBER_OF_ELEVATORS];
     public ArrayList<Person> peopleWaiting = new ArrayList<>();
     public ArrayList<Person> peopleAtDestination = new ArrayList<>();
     public int floorLevel;
+    public Building building;
 
     // Buttons
     public boolean isUpPressed;
@@ -14,24 +15,27 @@ public class Floor {
     public boolean[] isExpBankDownPressed;
 
 
-    public Floor(int floorLevel, ArrayList<boolean[]> boolSkipFloorsArray){
+    public Floor(int floorLevel, ArrayList<boolean[]> boolSkipFloorsArray, Building building){
+        this.building = building;
         this.floorLevel = floorLevel;
 
         this.isUpPressed = false;
         this.isDownPressed = false;
-        this.isExpBankUpPressed = new boolean[Building.NUMBER_OF_ELEVATORS];
-        this.isExpBankDownPressed = new boolean[Building.NUMBER_OF_ELEVATORS];
+        this.isExpBankUpPressed = new boolean[Main.NUMBER_OF_ELEVATORS];
+        this.isExpBankDownPressed = new boolean[Main.NUMBER_OF_ELEVATORS];
 
         Arrays.fill(isExpBankUpPressed, false);
         Arrays.fill(isExpBankDownPressed, false);
 
         if (floorLevel == 0){
             for (int i = 0; i < 9; i++) {
+                building.numberOfPeopleTotal++;
                 peopleWaiting.add(new Person(floorLevel, boolSkipFloorsArray));
             }
         }
         else{
             for (int i = 0; i < 3; i++) {
+                building.numberOfPeopleTotal++;
                 peopleWaiting.add(new Person(floorLevel, boolSkipFloorsArray));
             }
         }

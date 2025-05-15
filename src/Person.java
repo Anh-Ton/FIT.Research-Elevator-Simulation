@@ -11,7 +11,7 @@ public class Person {
         Random random = new Random();
 
         if (startingFloor == 0) {
-            desiredFloor = random.nextInt(Building.NUMBER_OF_FLOORS - 1) + 1;
+            desiredFloor = random.nextInt(Main.NUMBER_OF_FLOORS - 1) + 1;
         }
         else {
             double randomDouble = random.nextDouble();
@@ -19,7 +19,7 @@ public class Person {
                 desiredFloor = 0;
             }
             else{
-                int randomFloor = random.nextInt((Building.NUMBER_OF_FLOORS - 1) - 1) + 1;
+                int randomFloor = random.nextInt((Main.NUMBER_OF_FLOORS - 1) - 1) + 1;
                 if (randomFloor >= startingFloor) {
                     desiredFloor = randomFloor + 1;
                 }
@@ -34,7 +34,7 @@ public class Person {
 
     public void updateWantsExpress(int startingFloor, ArrayList<boolean[]> boolSkipFloorsArray) {
         wantsExpress = false;
-        wantedBanks = new boolean[Building.NUMBER_OF_ELEVATORS];
+        wantedBanks = new boolean[Main.NUMBER_OF_ELEVATORS];
         Arrays.fill(wantedBanks, false);
 
         for (int i = 0; i < boolSkipFloorsArray.size(); i++) {

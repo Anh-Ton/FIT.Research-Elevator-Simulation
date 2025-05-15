@@ -4,33 +4,30 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Building {
-    // ------------------------------------------- //
-    public final static int NUMBER_OF_FLOORS = 12;
-    public final static int NUMBER_OF_ELEVATORS = 7;
-    // ------------------------------------------- //
 
     // DATA: 0, 17.78, 19.12, 20.23, 21.53, 23.21, 25.12, 26.43, 27.98, 30.52, 32.33, 33.78
     public final static int[] LEVELS_TRAVELLED_TO_TIME= {0, 18, 19, 20, 22, 23, 25, 26, 28, 31, 32, 34};
-    public final Floor[] floors = new Floor[NUMBER_OF_FLOORS];
-    public final Elevator[] elevators = new Elevator[NUMBER_OF_ELEVATORS];
+    public final Floor[] floors = new Floor[Main.NUMBER_OF_FLOORS];
+    public final Elevator[] elevators = new Elevator[Main.NUMBER_OF_ELEVATORS];
     public int secondElapsed;
+    public int numberOfPeopleTotal;
+    public int numberOfPeopleFinished;
 
     public Building(int[][] elevatorSetup){
         ArrayList<boolean[]> boolSkipFloorsArray = convertElevatorSetupToBoolArray(elevatorSetup);
 
         // Initialise all floors
         for (int i = 0; i < floors.length; i++){
-            floors[i] = new Floor(i, boolSkipFloorsArray);
+            floors[i] = new Floor(i, boolSkipFloorsArray, this);
             // Update up down buttons
             floors[i].updateUpDownButtons();
         }
 
         // Set and create all elevators to random level in each bank
         for (int i = 0; i < elevators.length; i++){
-            int[] floorsToSkip = {};
             elevators[i] = new Elevator(this, i, elevatorSetup[i]);
             Random random = new Random();
-            int randomInt = random.nextInt(NUMBER_OF_FLOORS);
+            int randomInt = random.nextInt(Main.NUMBER_OF_FLOORS);
 
             floors[randomInt].setElevator(i, elevators[i]);
             elevators[i].currentFloor = randomInt;
@@ -82,7 +79,7 @@ public class Building {
 
         for (int i = 0; i < elevatorSetup.length; i++) {
 
-            boolean[] boolArray = new boolean[Building.NUMBER_OF_FLOORS];
+            boolean[] boolArray = new boolean[Main.NUMBER_OF_FLOORS];
             Arrays.fill(boolArray, false);
 
             if (elevatorSetup[i].length == 0) {
@@ -101,6 +98,10 @@ public class Building {
     }
 
     public boolean isComplete(){
+        return ((double) numberOfPeopleFinished / numberOfPeopleTotal) > Main.PERCENTAGE_COMPLETE_NEEDED;
+    }
+
+    public boolean isCompleteDepricated(){
         for (Floor floor : floors){
             if (!floor.isFloorFinished()){
                 return false;
