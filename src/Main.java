@@ -151,10 +151,10 @@ public class Main {
                                 writer.write(menziesBuilding.secondElapsed + ",");
                             }
 
-                            writer.write("\n");
+                            writer.write("\n\n");
                         }
 
-                        writer.write("\n\n\n");
+                        writer.write("\n\n\n\n\n");
                     }
 
                     writer.close();
