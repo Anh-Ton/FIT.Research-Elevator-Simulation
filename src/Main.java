@@ -7,11 +7,14 @@ public class Main {
     // -------------------------------------------------------- //
     public final static int NUMBER_OF_FLOORS = 12;
     public final static int NUMBER_OF_ELEVATORS = 7;
-    public static final int SIMULATION_ITERATIONS_PER_RATIO = 3000;
-    public static final int MAX_CELL_ROW_LENGTH = 50;
+    public static final int SIMULATION_ITERATIONS_PER_RATIO = 2000;
+    public static final int MAX_CELL_ROW_LENGTH = 25;
     public static final double PERCENTAGE_COMPLETE_NEEDED = 0.8;
 
     public static final boolean RUN_WITH_VISUALS = false;
+
+    // If run with visuals
+    public static final boolean RUN_WITH_COMPLETION_INCREMENTS = true;
     // -------------------------------------------------------- //
 
     public static void main(String[] args) {
@@ -120,35 +123,72 @@ public class Main {
         if (RUN_WITH_VISUALS) {
             for (int[][] expressConfiguration : expressConfigurations) {
                 for (int i = 0; i < 1; i++) {
-                    Building menziesBuilding = new Building(expressConfiguration);
+                    Building menziesBuilding = new Building(expressConfiguration, PERCENTAGE_COMPLETE_NEEDED);
                     menziesBuilding.runWithVisuals();
                 }
             }
         }
 
         else{
-            try {
-                BufferedWriter writer = new BufferedWriter(new FileWriter("simulation_results.csv"));
-                for (int j = 0; j < expressConfigurations.size(); j++) {
 
-                    writer.write(configNames.get(j));
-                    for (int i = 0; i < SIMULATION_ITERATIONS_PER_RATIO; i++) {
-                        if (i % MAX_CELL_ROW_LENGTH == 0) {
+            if (RUN_WITH_COMPLETION_INCREMENTS) {
+                try {
+                    BufferedWriter writer = new BufferedWriter(new FileWriter("simulation_results_increment.csv"));
+                    for (int j = 0; j < expressConfigurations.size(); j++) {
+
+                        writer.write(configNames.get(j));
+
+                        for (double k = 0.1; k <= 1; k += 0.1){
+                            writer.write("\n" + (Math.round(k * 100)) + "%");
+
+                            for (int i = 0; i < SIMULATION_ITERATIONS_PER_RATIO; i++) {
+                                if (i % MAX_CELL_ROW_LENGTH == 0) {
+                                    writer.write("\n");
+                                }
+
+                                Building menziesBuilding = new Building(expressConfigurations.get(j), k);
+                                menziesBuilding.run();
+                                writer.write(menziesBuilding.secondElapsed + ",");
+                            }
+
                             writer.write("\n");
                         }
 
-                        Building menziesBuilding = new Building(expressConfigurations.get(j));
-                        menziesBuilding.run();
-                        writer.write(menziesBuilding.secondElapsed + ",");
+                        writer.write("\n\n\n");
                     }
 
-                    writer.write("\n\n\n");
+                    writer.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+            }
 
-                writer.close();
 
-            } catch (IOException e) {
-                e.printStackTrace();
+            else {
+                try {
+                    BufferedWriter writer = new BufferedWriter(new FileWriter("simulation_results.csv"));
+                    for (int j = 0; j < expressConfigurations.size(); j++) {
+
+                        writer.write(configNames.get(j));
+                        for (int i = 0; i < SIMULATION_ITERATIONS_PER_RATIO; i++) {
+                            if (i % MAX_CELL_ROW_LENGTH == 0) {
+                                writer.write("\n");
+                            }
+
+                            Building menziesBuilding = new Building(expressConfigurations.get(j), PERCENTAGE_COMPLETE_NEEDED);
+                            menziesBuilding.run();
+                            writer.write(menziesBuilding.secondElapsed + ",");
+                        }
+
+                        writer.write("\n\n\n");
+                    }
+
+                    writer.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

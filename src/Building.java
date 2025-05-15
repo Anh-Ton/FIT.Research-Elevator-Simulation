@@ -13,7 +13,11 @@ public class Building {
     public int numberOfPeopleTotal;
     public int numberOfPeopleFinished;
 
-    public Building(int[][] elevatorSetup){
+    public double percentageForComplete;
+
+    public Building(int[][] elevatorSetup, double percentageForComplete){
+        this.percentageForComplete = percentageForComplete;
+
         ArrayList<boolean[]> boolSkipFloorsArray = convertElevatorSetupToBoolArray(elevatorSetup);
 
         // Initialise all floors
@@ -98,7 +102,7 @@ public class Building {
     }
 
     public boolean isComplete(){
-        return ((double) numberOfPeopleFinished / numberOfPeopleTotal) > Main.PERCENTAGE_COMPLETE_NEEDED;
+        return ((double) numberOfPeopleFinished / numberOfPeopleTotal) > percentageForComplete;
     }
 
     public boolean isCompleteDepricated(){
