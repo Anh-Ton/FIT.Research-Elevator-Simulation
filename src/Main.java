@@ -7,8 +7,8 @@ public class Main {
     // -------------------------------------------------------- //
     public final static int NUMBER_OF_FLOORS = 12;
     public final static int NUMBER_OF_ELEVATORS = 7;
-    public static final int SIMULATION_ITERATIONS_PER_RATIO = 2000;
-    public static final int MAX_CELL_ROW_LENGTH = 25;
+    public static final int SIMULATION_ITERATIONS_PER_RATIO = 5000;
+//    public static final int MAX_CELL_ROW_LENGTH = 25;
     public static final double PERCENTAGE_COMPLETE_NEEDED = 0.8;
 
     public static final boolean RUN_WITH_VISUALS = false;
@@ -139,12 +139,12 @@ public class Main {
                         writer.write(configNames.get(j));
 
                         for (double k = 0.1; k <= 1; k += 0.1){
-                            writer.write("\n" + (Math.round(k * 100)) + "%");
+                            writer.write("\n" + (Math.round(k * 100)) + "%\n");
 
                             for (int i = 0; i < SIMULATION_ITERATIONS_PER_RATIO; i++) {
-                                if (i % MAX_CELL_ROW_LENGTH == 0) {
-                                    writer.write("\n");
-                                }
+//                                if (i % MAX_CELL_ROW_LENGTH == 0) {
+//                                    writer.write("\n");
+//                                }
 
                                 Building menziesBuilding = new Building(expressConfigurations.get(j), k);
                                 menziesBuilding.run();
@@ -172,9 +172,9 @@ public class Main {
 
                         writer.write(configNames.get(j));
                         for (int i = 0; i < SIMULATION_ITERATIONS_PER_RATIO; i++) {
-                            if (i % MAX_CELL_ROW_LENGTH == 0) {
-                                writer.write("\n");
-                            }
+//                            if (i % MAX_CELL_ROW_LENGTH == 0) {
+//                                writer.write("\n");
+//                            }
 
                             Building menziesBuilding = new Building(expressConfigurations.get(j), PERCENTAGE_COMPLETE_NEEDED);
                             menziesBuilding.run();
